@@ -1,0 +1,34 @@
+services:
+  webdeployer:
+    # 直接用官方 node 镜像，不需要构建：项目是零依赖的，代码挂载进去就行
+    image: node:24-alpine
+    container_name: webdeployer
+    restart: unless-stopped
+    working_dir: /app
+    command: ["node", "server.js"]
+    ports:
+      # 左边是 NAS 上对外的端口，只开这一个
+      - "9090:9090"
+    environment:
+      TZ: Asia/Shanghai
+      DATA_DIR: /app/data
+      PORT: "9090"
+      # 首次启动用它初始化后台密码，之后密码哈希存在数据库里，这行就可以删掉了
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-}"
+      # HTTPS：证书和私钥，路径是容器里的（对应下面挂载进来的 /certs）
+      TLS_CERT: "/certs/shuijing.site.pem"
+      TLS_KEY: "/certs/shuijing.site.key"
+    volumes:
+      # 项目代码 + 站点数据，都在存储池里，容器删了数据还在
+      - /vol2/1000/deploy/WebDeployer:/app
+      # 证书文件夹：只读挂进去，容器改不了你的证书
+      - /vol2/1000/deploy/证书文档/Nginx:/certs:ro
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          wget -qO- --no-check-certificate https://127.0.0.1:9090/healthz
+          || wget -qO- http://127.0.0.1:9090/healthz
+      interval: 30s
+      timeout: 3s
+      retries: 3

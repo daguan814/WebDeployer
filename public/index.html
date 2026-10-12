@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>静态网页部署大师</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- 登录 -->
+<div id="login" class="login" hidden>
+  <form class="card" id="loginForm" autocomplete="off">
+    <div class="logo">🚀</div>
+    <h1>静态网页部署大师</h1>
+    <p class="muted">请输入后台密码</p>
+    <input type="password" id="password" placeholder="密码" autocomplete="current-password" required>
+    <button type="submit" id="loginBtn">进入后台</button>
+    <p class="error" id="loginError" hidden></p>
+  </form>
+</div>
+
+<!-- 主界面 -->
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo-sm">🚀</span>
+      <span>静态网页部署大师</span>
+    </div>
+    <div class="stats" id="stats"></div>
+    <button class="ghost" id="logoutBtn">退出</button>
+  </header>
+
+  <main>
+    <section class="dropzone" id="dropzone">
+      <input type="file" id="folderPicker" webkitdirectory directory multiple hidden>
+      <input type="file" id="filePicker" multiple hidden>
+      <div class="dz-inner">
+        <div class="dz-icon">📁</div>
+        <div class="dz-title">拖入网页文件夹，或任意文件</div>
+        <div class="dz-hint">文件夹 → 发布成网站；单个文件 → 直接拿链接，别人点开就能下载</div>
+        <div class="dz-buttons">
+          <button class="primary" id="pickBtn" type="button">选择文件夹</button>
+          <button class="ghost" id="pickFilesBtn" type="button">选择文件</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 上传前的确认面板 -->
+    <section class="panel" id="pendingPanel" hidden>
+      <h2>准备上传</h2>
+      <div class="pending-grid">
+        <label>站点名称<input id="pendingName" type="text" maxlength="60"></label>
+        <label>访问路径 <span class="prefix">/s/</span><input id="pendingSlug" type="text" maxlength="60"></label>
+        <label>部署到
+          <select id="pendingTarget">
+            <option value="__new__">新建站点</option>
+          </select>
+        </label>
+      </div>
+      <div class="pending-summary" id="pendingSummary"></div>
+      <div class="pending-actions">
+        <button class="primary" id="startUpload">开始上传</button>
+        <button class="ghost" id="cancelUpload">取消</button>
+      </div>
+    </section>
+
+    <!-- 上传进度 -->
+    <section class="panel" id="progressPanel" hidden>
+      <h2 id="progressTitle">正在上传…</h2>
+      <div class="progress"><div class="bar" id="progressBar"></div></div>
+      <div class="progress-meta">
+        <span id="progressText">0%</span>
+        <span id="progressFile" class="muted"></span>
+      </div>
+    </section>
+
+    <section class="sites">
+      <div class="sites-head">
+        <h2>我的站点</h2>
+        <span class="muted" id="sitesCount"></span>
+      </div>
+      <div id="siteList" class="site-list"></div>
+      <div id="emptyState" class="empty" hidden>
+        <p>还没有任何站点。</p>
+        <p class="muted">把上面那个文件夹拖进来就能发布第一个。</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toasts" class="toasts"></div>
+<script src="admin.js" type="module"></script>
+</body>
+</html>

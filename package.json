@@ -1,0 +1,15 @@
+{
+  "name": "webdeployer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "静态网页部署大师 —— 拖拽文件夹即可发布，单端口对外",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "set-password": "node tools/set-password.js",
+    "unlock": "node tools/unlock.js"
+  }
+}

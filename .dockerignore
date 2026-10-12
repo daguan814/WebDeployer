@@ -1,0 +1,9 @@
+data/
+.git/
+.gitignore
+.idea/
+node_modules/
+*.log
+.DS_Store
+README.md
+.env
